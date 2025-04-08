@@ -21,6 +21,12 @@ spec:
             - containerPort: 8080
           env:
             - name: NAME
-              value: "Fábio"
+              valueFrom:
+                configMapKeyRef:
+                  name: goserver-env
+                  key: NAME
             - name: AGE
-              value: "32"
+              valueFrom:
+                configMapKeyRef:
+                  name: goserver-env
+                  key: AGE
