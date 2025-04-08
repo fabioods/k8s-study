@@ -16,20 +16,19 @@ spec:
     spec:
       containers:
         - name: goserver
-          image: fahds1993/hello-go:v3
+          image: fahds1993/hello-go:v4
           ports:
             - containerPort: 8080
           envFrom:
             - configMapRef:
                 name: goserver-env
-          # env:
-          #   - name: NAME
-          #     valueFrom:
-          #       configMapKeyRef:
-          #         name: goserver-env
-          #         key: NAME
-          #   - name: AGE
-          #     valueFrom:
-          #       configMapKeyRef:
-          #         name: goserver-env
-          #         key: AGE
+          volumeMounts:
+            - name: config
+              mountPath: "family"
+      volumes:
+        - name: config
+          configMap:
+            name: configmap-env-family
+            items:
+            - key: members
+              path: family.txt
