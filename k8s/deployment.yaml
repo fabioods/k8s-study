@@ -16,12 +16,14 @@ spec:
     spec:
       containers:
         - name: goserver
-          image: fahds1993/hello-go:v4
+          image: fahds1993/hello-go:v5
           ports:
             - containerPort: 8080
           envFrom:
             - configMapRef:
                 name: goserver-env
+            - secretRef:
+                name: goserver-secret
           volumeMounts:
             - name: config
               mountPath: "family"

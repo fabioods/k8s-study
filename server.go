@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 )
+
+var startedAt = time.Now()
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -21,6 +24,22 @@ func main() {
 		}
 		w.Header().Set("Content-Type", "text/plain")
 		w.Write(data)
+	})
+	http.HandleFunc("/secret", func(w http.ResponseWriter, r *http.Request) {
+		user := os.Getenv("USER")
+		password := os.Getenv("PASSWORD")
+		msg := fmt.Sprintf("Hello, %s! Your password is %s.", user, password)
+		w.Header().Set("Content-Type", "text/plain")
+		w.Write([]byte(msg))
+	})
+	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+		duration := time.Since(startedAt)
+		if duration.Seconds() > 25 {
+			w.Header().Set("Content-Type", "text/plain")
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(fmt.Sprintf("Server has been running for %s, which is too long.", duration)))
+			return
+		}
 	})
 	http.ListenAndServe(":8080", nil)
 }
