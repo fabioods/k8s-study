@@ -16,7 +16,32 @@ spec:
     spec:
       containers:
         - name: goserver
-          image: fahds1993/hello-go:v5
+          image: fahds1993/hello-go:v8
+          startupProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            periodSeconds: 3
+            failureThreshold: 30
+
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            periodSeconds: 3
+            failureThreshold: 1
+           # initialDelaySeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            periodSeconds: 5
+            failureThreshold: 1
+            timeoutSeconds: 1
+            successThreshold: 1
+            #initialDelaySeconds: 15
+
           ports:
             - containerPort: 8080
           envFrom:
@@ -27,6 +52,13 @@ spec:
           volumeMounts:
             - name: config
               mountPath: "family"
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
       volumes:
         - name: config
           configMap:
