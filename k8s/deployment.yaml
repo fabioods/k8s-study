@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: goserver
-          image: fahds1993/hello-go:v8
+          image: fahds1993/hello-go:v9
           startupProbe:
             httpGet:
               path: /healthz
@@ -55,10 +55,10 @@ spec:
           resources:
             limits:
               memory: "256Mi"
-              cpu: "500m"
+              cpu: "50m"
             requests:
               memory: "128Mi"
-              cpu: "250m"
+              cpu: "50m"
       volumes:
         - name: config
           configMap:

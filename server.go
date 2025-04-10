@@ -34,7 +34,7 @@ func main() {
 	})
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		duration := time.Since(startedAt)
-		if duration.Seconds() < 10 || duration.Seconds() > 60 {
+		if duration.Seconds() < 10 {
 			w.Header().Set("Content-Type", "text/plain")
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(fmt.Sprintf("Server has been running for %s, which is too short.", duration)))
